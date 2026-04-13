@@ -4,142 +4,87 @@
  */
 package com.mycompany.loginsystem;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- *
- * @author Student
- */
 public class LoginSystemTest {
-    
-    public LoginSystemTest() {
-    }
-    
-    @BeforeAll
-    public static void setUpClass() {
-    }
-    
-    @AfterAll
-    public static void tearDownClass() {
-    }
-    
-    @BeforeEach
-    public void setUp() {
-    }
-    
-    @AfterEach
-    public void tearDown() {
-    }
 
-    @Test
-    public void testSomeMethod() {
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
-    }
+// ---------------- USERNAME TESTS ----------------
+@Test
+public void testCheckUserName_Valid() {
+assertTrue(LoginSystem.checkUserName("user_"));
+}
 
-    /**
-     * Test of checkUserName method, of class LoginSystem.
-     */
-    @Test
-    public void testCheckUserName() {
-        System.out.println("checkUserName");
-        String username = "Kyl_1";
-        boolean expResult = true;
-        boolean result = LoginSystem.checkUserName(username);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
-    }
+@Test
+public void testCheckUserName_Invalid_NoUnderscore() {
+assertFalse(LoginSystem.checkUserName("user"));
+}
 
-    /**
-     * Test of checkPasswordComplexity method, of class LoginSystem.
-     */
-    @Test
-    public void testCheckPasswordComplexity() {
-        System.out.println("checkPasswordComplexity");
-        String password = "Ch&&sec@ke99!";
-        boolean expResult = true;
-        boolean result = LoginSystem.checkPasswordComplexity(password);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
-    }
+@Test
+public void testCheckUserName_Invalid_TooLong() {
+assertFalse(LoginSystem.checkUserName("user_name"));
+}
 
-    /**
-     * Test of checkCellPhoneNumber method, of class LoginSystem.
-     */
-    @Test
-    public void testCheckCellPhoneNumber() {
-        System.out.println("checkCellPhoneNumber");
-        String number = "+27684860919";
-        boolean expResult = true;
-        boolean result = LoginSystem.checkCellPhoneNumber(number);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
-    }
+// ---------------- PASSWORD TESTS ----------------
+@Test
+public void testCheckPasswordComplexity_Valid() {
+assertTrue(LoginSystem.checkPasswordComplexity("Pass123!"));
+}
 
-    /**
-     * Test of registerUser method, of class LoginSystem.
-     */
-    @Test
-    public void testRegisterUser() {
-        System.out.println("registerUser");
-        String username = "";
-        String password = "";
-        boolean expResult = true;
-        String result = LoginSystem.registerUser(username, password);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
-    }
+@Test
+public void testCheckPasswordComplexity_Invalid() {
+assertFalse(LoginSystem.checkPasswordComplexity("password"));
+}
 
-    /**
-     * Test of loginUser method, of class LoginSystem.
-     */
-    @Test
-    public void testLoginUser() {
-        System.out.println("");
-        String username ="" ;
-        String password = "";
-        String storedUsername = "";
-        String storedPassword = "";
-        boolean expResult = true;
-        boolean result = LoginSystem.loginUser(username, password, storedUsername, storedPassword);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
-    }
+// ---------------- CELL NUMBER TESTS ----------------
+@Test
+public void testCheckCellPhoneNumber_Valid() {
+assertTrue(LoginSystem.checkCellPhoneNumber("+27123456789"));
+}
 
-    /**
-     * Test of returnLoginStatus method, of class LoginSystem.
-     */
-    @Test
-    public void testReturnLoginStatus() {
-        System.out.println("returnLoginStatus");
-        boolean status = false;
-        String expResult = "";
-        String result = LoginSystem.returnLoginStatus(status);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
-    }
+@Test
+public void testCheckCellPhoneNumber_Invalid() {
+assertFalse(LoginSystem.checkCellPhoneNumber("0712345678"));
+}
 
-    /**
-     * Test of main method, of class LoginSystem.
-     */
-    @Test
-    public void testMain() {
-        System.out.println("main");
-        String[] args = null;
-        LoginSystem.main(args);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
-    }
-    
+// ---------------- REGISTER USER ----------------
+@Test
+public void testRegisterUser_Success() {
+String result = LoginSystem.registerUser("user_", "Pass123!");
+assertEquals("Username and password successfully captured. User registered!", result);
+}
+
+@Test
+public void testRegisterUser_FailUsername() {
+String result = LoginSystem.registerUser("user", "Pass123!");
+assertEquals("Username is not correct. Must have _ and max 5 chars.", result);
+}
+
+@Test
+public void testRegisterUser_FailPassword() {
+String result = LoginSystem.registerUser("user_", "password");
+assertEquals("Password is not correct. Must have 8+ chars, capital letter, number, and special char.", result);
+}
+
+// ---------------- LOGIN TESTS ----------------
+@Test
+public void testLoginUser_Success() {
+assertTrue(LoginSystem.loginUser("user_", "Pass123!", "user_", "Pass123!"));
+}
+
+@Test
+public void testLoginUser_Fail() {
+assertFalse(LoginSystem.loginUser("user_", "wrong", "user_", "Pass123!"));
+}
+
+// ---------------- STATUS TEST ----------------
+@Test
+public void testReturnLoginStatus_Success() {
+assertEquals("Login successful! Welcome back!", LoginSystem.returnLoginStatus(true));
+}
+
+@Test
+public void testReturnLoginStatus_Fail() {
+assertEquals("Username or password incorrect, please try again.", LoginSystem.returnLoginStatus(false));
+}
 }
